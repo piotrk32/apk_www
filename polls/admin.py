@@ -6,8 +6,12 @@ def stanowisko_display(obj):
     return f'{obj.stanowisko.nazwa} ({obj.stanowisko.id})'
 
 class OsobaAdmin(admin.ModelAdmin):
-    list_display = ('imie', 'nazwisko', 'plec', 'stanowisko_display', 'data_dodania')  # Uwzględnienie stanowisko_display
-    list_filter = ('stanowisko',)  # Dodanie filtru dla stanowiska
+    list_display = ('imie', 'nazwisko', 'plec', 'stanowisko_display', 'data_dodania')
+    list_filter = ('stanowisko', 'data_dodania')  # Dodanie filtru dla stanowiska i daty dodania
 
-admin.site.register(Stanowisko)
-admin.site.register(Osoba, OsobaAdmin)
+class StanowiskoAdmin(admin.ModelAdmin):
+    list_display = ('nazwa', 'opis')
+    list_filter = ('nazwa',)  # Dodanie filtra dla nazwy
+
+admin.site.register(Stanowisko, StanowiskoAdmin)  # Zarejestrowanie modelu Stanowisko z niestandardowym adminem
+admin.site.register(Osoba, OsobaAdmin)  # Zarejestrowanie modelu Osoba z niestandardowym adminem
