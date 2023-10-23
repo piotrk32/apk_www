@@ -22,5 +22,8 @@ class Osoba(models.Model):
     stanowisko = models.ForeignKey(Stanowisko, on_delete=models.CASCADE)
     data_dodania = models.DateField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['nazwisko']
+
     def __str__(self):
         return f'{self.imie} {self.nazwisko}'
