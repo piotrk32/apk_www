@@ -2,8 +2,6 @@
 
 ## Przykład użycia serializerów dla modeli `Stanowisko` i `Osoba`
 
-Poniżej przedstawiono kod, który demonstruje, jak można przetestować serializery dla modeli `Stanowisko` i `Osoba` w Django Rest Framework.
-
 ```python
 # Importy modeli i serializerów
 from aplikacja.models import Stanowisko, Osoba
