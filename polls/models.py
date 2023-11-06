@@ -11,6 +11,9 @@ class Stanowisko(models.Model):
     def __str__(self):
         return self.nazwa
 
+import datetime
+from django.db import models
+
 class Osoba(models.Model):
     PLEC_CHOICES = [
         ('K', 'Kobieta'),
@@ -21,6 +24,7 @@ class Osoba(models.Model):
     nazwisko = models.CharField(max_length=255, blank=False)
     plec = models.CharField(max_length=1, choices=PLEC_CHOICES)
     stanowisko = models.ForeignKey(Stanowisko, on_delete=models.CASCADE)
+    miesiac_dodania = models.IntegerField(default=lambda: timezone.now().month)
 
     def __str__(self):
         return f'{self.imie} {self.nazwisko}'
