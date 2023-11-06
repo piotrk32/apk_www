@@ -34,6 +34,5 @@ class Osoba(models.Model):
 
         # Walidacja dla pola 'miesiac_dodania'
         current_month = timezone.now().month
-        current_year = timezone.now().year
         if self.miesiac_dodania > current_month and self.miesiac_dodania >= current_month:
             raise ValidationError({'miesiac_dodania': 'Miesiąc dodania nie może być z przyszłości.'})
