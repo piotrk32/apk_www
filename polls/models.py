@@ -27,11 +27,13 @@ class Osoba(models.Model):
 
     def clean(self):
         # Walidacja dla pola 'nazwa'
-        if not self.nazwa.replace(' ', '').isalpha():
-            raise ValidationError({'nazwa': 'Nazwa może zawierać tylko litery.'})
+        if not self.imie.replace(' ', '').isalpha():
+            raise ValidationError({'imie': 'Imie może zawierać tylko litery.'})
+        if not self.nazwisko.replace(' ', '').isalpha():
+            raise ValidationError({'nazwisko': 'Nazwisko może zawierać tylko litery.'})
 
         # Walidacja dla pola 'miesiac_dodania'
         current_month = timezone.now().month
         current_year = timezone.now().year
-        if self.miesiac_dodania > current_month and self.rok_dodania >= current_year:
+        if self.miesiac_dodania > current_month and self.miesiac_dodania >= current_month:
             raise ValidationError({'miesiac_dodania': 'Miesiąc dodania nie może być z przyszłości.'})
