@@ -1,5 +1,3 @@
-import datetime
-
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
@@ -11,9 +9,6 @@ class Stanowisko(models.Model):
 
     def __str__(self):
         return self.nazwa
-
-import datetime
-from django.db import models
 
 class Osoba(models.Model):
     PLEC_CHOICES = [
