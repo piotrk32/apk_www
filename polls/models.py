@@ -1,5 +1,6 @@
 import datetime
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 
@@ -28,3 +29,14 @@ class Osoba(models.Model):
 
     def __str__(self):
         return f'{self.imie} {self.nazwisko}'
+
+    def clean(self):
+        # Walidacja dla pola 'nazwa'
+        if not self.nazwa.replace(' ', '').isalpha():
+            raise ValidationError({'nazwa': 'Nazwa może zawierać tylko litery.'})
+
+        # Walidacja dla pola 'miesiac_dodania'
+        current_month = timezone.now().month
+        current_year = timezone.now().year
+        if self.miesiac_dodania > current_month and self.rok_dodania >= current_year:
+            raise ValidationError({'miesiac_dodania': 'Miesiąc dodania nie może być z przyszłości.'})
