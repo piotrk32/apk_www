@@ -3,6 +3,14 @@ from django.db import models
 from django.utils import timezone
 
 
+class Druzyna(models.Model):
+    nazwa = models.CharField(max_length=100)
+    założyciel = models.CharField(max_length=100)
+    data_zalozenia = models.DateField()
+
+    def __str__(self):
+        return self.nazwa
+
 class Stanowisko(models.Model):
     nazwa = models.CharField(max_length=255, blank=False)
     opis = models.TextField(blank=True)
@@ -36,3 +44,7 @@ class Osoba(models.Model):
         current_month = timezone.now().month
         if self.miesiac_dodania > current_month and self.miesiac_dodania >= current_month:
             raise ValidationError({'miesiac_dodania': 'Miesiąc dodania nie może być z przyszłości.'})
+
+
+class Meta:
+    app_label1 = 'polls'
