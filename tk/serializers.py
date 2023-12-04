@@ -24,11 +24,7 @@ class OsobaSerializer(serializers.ModelSerializer):
         fields = ['id', 'imie', 'nazwisko', 'plec', 'stanowisko', 'stanowisko_id']
 
     def create(self, validated_data):
-        stanowisko_data = validated_data.pop('stanowisko', None)
-        osoba = Osoba.objects.create(**validated_data)
-        if stanowisko_data:
-            Stanowisko.objects.create(osoba=osoba, **stanowisko_data)
-        return osoba
+        return Osoba.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         stanowisko_data = validated_data.pop('stanowisko', None)

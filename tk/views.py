@@ -1,15 +1,11 @@
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .models import Osoba, Druzyna
-from .serializers import OsobaSerializer, DruzynaSerializer
-from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework import status
 from django.http import HttpResponse
-from .models import Osoba
-from .serializers import OsobaSerializer
+from rest_framework.views import APIView
+from .models import Osoba, Druzyna
+from .serializers import OsobaSerializer, DruzynaSerializer
 from django.core.exceptions import PermissionDenied
 
 @api_view(['GET'])
@@ -58,14 +54,18 @@ def osoba_stanowisko_list(request, stanowisko_id):
         serializer = OsobaSerializer(osoby, many=True)
         return Response(serializer.data)
 
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
-@permission_classes([DjangoModelPermissions])
-def osoba_list(request):
-    if request.method == 'GET':
-        osoby = Osoba.objects.filter(wlasciciel=request.user)
-        serializer = OsobaSerializer(osoby, many=True)
+class osoba_list(APIView):
+    permission_classes = [DjangoModelPermissions]
+
+    def get_queryset(self):
+        return Osoba.objects.filter(wlasciciel=self.request.user)
+
+    def get(self, request):
+        queryset = self.get_queryset()
+        serializer = OsobaSerializer(queryset, many=True)
         return Response(serializer.data)
-    elif request.method == 'POST':
+
+    def post(self, request):
         serializer = OsobaSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -130,3 +130,12 @@ def druzyna_detail(request, pk):
     elif request.method == 'DELETE':
         druzyna.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['POST'])
+def osoba_create(request):
+    if request.method == 'POST':
+        serializer = OsobaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
